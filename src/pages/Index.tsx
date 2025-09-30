@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -18,6 +19,7 @@ interface Website {
 }
 
 const Index = () => {
+  const navigate = useNavigate();
   const [editMode, setEditMode] = useState(false);
   const [websites] = useState<Website[]>([
     { id: 1, name: 'Мой цветочный магазин', domain: 'flowers.poehali.dev', template: 'Bloom', published: true, views: 1247 },
@@ -182,7 +184,11 @@ const Index = () => {
                         <Icon name="Settings" size={14} className="mr-1" />
                         Настроить
                       </Button>
-                      <Button className="flex-1 bg-pink-500 hover:bg-pink-600 text-white rounded-full" size="sm">
+                      <Button 
+                        className="flex-1 bg-pink-500 hover:bg-pink-600 text-white rounded-full" 
+                        size="sm"
+                        onClick={() => navigate('/editor')}
+                      >
                         <Icon name="Edit" size={14} className="mr-1" />
                         Редактор
                       </Button>
