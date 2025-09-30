@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Rubik:wght@300;400;500;600&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -87,6 +89,11 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --pink: 328 100% 54%;
+    --pink-light: 351 100% 86%;
+    --pink-medium: 330 100% 71%;
+    --pink-soft: 350 100% 95%;
   }
 }
 
@@ -97,5 +104,15 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: "Rubik", sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Montserrat", sans-serif;
   }
 }
