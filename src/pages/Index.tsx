@@ -54,22 +54,24 @@ const Index = () => {
 
             <nav className="hidden md:flex items-center gap-6">
               <a href="#" className="text-gray-700 hover:text-pink-600 transition-colors">Главная</a>
-              <a href="#" className="text-gray-700 hover:text-pink-600 transition-colors">Дашборд</a>
-              <a href="#" className="text-gray-700 hover:text-pink-600 transition-colors">Шаблоны</a>
-              <a href="#" className="text-gray-700 hover:text-pink-600 transition-colors">Домены</a>
-              {isAuthenticated && hasPermission('canManageUsers') && (
+              {isAuthenticated && (
                 <Button
                   variant="ghost"
                   className="text-gray-700 hover:text-pink-600"
-                  onClick={() => navigate('/users')}
+                  onClick={() => navigate('/dashboard')}
                 >
-                  <Icon name="Users" size={16} className="mr-2" />
-                  Пользователи
+                  <Icon name="LayoutDashboard" size={16} className="mr-2" />
+                  Панель управления
                 </Button>
               )}
+              <a href="#" className="text-gray-700 hover:text-pink-600 transition-colors">Шаблоны</a>
+              <a href="#" className="text-gray-700 hover:text-pink-600 transition-colors">Домены</a>
               {isAuthenticated ? (
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-pink-50 rounded-full">
+                  <div 
+                    className="flex items-center gap-2 px-3 py-1.5 bg-pink-50 rounded-full cursor-pointer hover:bg-pink-100 transition-colors"
+                    onClick={() => navigate('/dashboard')}
+                  >
                     <div className="bg-gradient-to-br from-pink-400 to-purple-500 rounded-full w-7 h-7 flex items-center justify-center text-white text-sm font-semibold">
                       {user?.name.charAt(0)}
                     </div>
@@ -107,22 +109,24 @@ const Index = () => {
                 </SheetHeader>
                 <div className="flex flex-col gap-4 mt-6">
                   <a href="#" className="text-lg text-gray-700 hover:text-pink-600">Главная</a>
-                  <a href="#" className="text-lg text-gray-700 hover:text-pink-600">Дашборд</a>
-                  <a href="#" className="text-lg text-gray-700 hover:text-pink-600">Шаблоны</a>
-                  <a href="#" className="text-lg text-gray-700 hover:text-pink-600">Домены</a>
-                  {isAuthenticated && hasPermission('canManageUsers') && (
+                  {isAuthenticated && (
                     <Button
                       variant="ghost"
                       className="justify-start text-lg text-gray-700 hover:text-pink-600"
-                      onClick={() => navigate('/users')}
+                      onClick={() => navigate('/dashboard')}
                     >
-                      <Icon name="Users" size={20} className="mr-2" />
-                      Пользователи
+                      <Icon name="LayoutDashboard" size={20} className="mr-2" />
+                      Панель управления
                     </Button>
                   )}
+                  <a href="#" className="text-lg text-gray-700 hover:text-pink-600">Шаблоны</a>
+                  <a href="#" className="text-lg text-gray-700 hover:text-pink-600">Домены</a>
                   {isAuthenticated ? (
                     <div className="space-y-3 pt-4 border-t">
-                      <div className="flex items-center gap-3 px-3 py-2 bg-pink-50 rounded-lg">
+                      <div 
+                        className="flex items-center gap-3 px-3 py-2 bg-pink-50 rounded-lg cursor-pointer hover:bg-pink-100 transition-colors"
+                        onClick={() => navigate('/dashboard')}
+                      >
                         <div className="bg-gradient-to-br from-pink-400 to-purple-500 rounded-full w-10 h-10 flex items-center justify-center text-white font-semibold">
                           {user?.name.charAt(0)}
                         </div>
