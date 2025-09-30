@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Users from "./pages/Users";
 import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
+import Shop from "./pages/Shop";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -48,6 +49,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Settings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/shop"
+              element={
+                <ProtectedRoute>
+                  <Shop />
                 </ProtectedRoute>
               }
             />
