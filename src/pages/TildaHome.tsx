@@ -1,24 +1,46 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
+import { useProject } from '@/contexts/ProjectContext';
 import { Project } from '@/types/tilda';
+import { toast } from 'sonner';
 
 export default function TildaHome() {
   const navigate = useNavigate();
-  const [projects] = useState<Project[]>([
-    {
-      id: '1',
-      name: 'Мой первый сайт',
-      pages: [],
+  const { projects, setCurrentProject, addProject } = useProject();
+
+  const createNewProject = () => {
+    const newProject: Project = {
+      id: Date.now().toString(),
+      name: `Проект ${projects.length + 1}`,
+      pages: [
+        {
+          id: 'page-1',
+          title: 'Главная',
+          slug: 'index',
+          blocks: [],
+          settings: {},
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
       settings: {
         primaryColor: '#ec4899',
         secondaryColor: '#f472b6',
         fontFamily: 'Inter',
       },
-    },
-  ]);
+    };
+    addProject(newProject);
+    setCurrentProject(newProject);
+    toast.success('Проект создан!');
+    navigate('/tilda/editor');
+  };
+
+  const openProject = (project: Project) => {
+    setCurrentProject(project);
+    navigate('/tilda/editor');
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-fuchsia-50">
@@ -45,7 +67,10 @@ export default function TildaHome() {
               <Button variant="outline" className="border-pink-300 text-pink-600 hover:bg-pink-50">
                 Помощь
               </Button>
-              <Button className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600">
+              <Button
+                onClick={createNewProject}
+                className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600"
+              >
                 <Icon name="Plus" size={16} className="mr-2" />
                 Создать проект
               </Button>
@@ -65,33 +90,39 @@ export default function TildaHome() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card
-            onClick={() => navigate('/tilda/editor')}
-            className="group cursor-pointer hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-transparent hover:border-pink-300"
-          >
-            <div className="aspect-video bg-gradient-to-br from-pink-100 via-rose-100 to-fuchsia-100 flex items-center justify-center relative overflow-hidden">
-              <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-              <Icon
-                name="Layout"
-                size={64}
-                className="text-pink-300 group-hover:text-pink-500 transition-colors"
-              />
-            </div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-pink-600 transition-colors">
-                {projects[0]?.name || 'Новый проект'}
-              </h3>
-              <div className="flex items-center justify-between text-sm text-gray-500">
-                <span className="flex items-center">
-                  <Icon name="FileText" size={14} className="mr-1" />
-                  0 страниц
-                </span>
-                <span>Изменено сегодня</span>
+          {projects.map((project) => (
+            <Card
+              key={project.id}
+              onClick={() => openProject(project)}
+              className="group cursor-pointer hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-transparent hover:border-pink-300"
+            >
+              <div className="aspect-video bg-gradient-to-br from-pink-100 via-rose-100 to-fuchsia-100 flex items-center justify-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+                <Icon
+                  name="Layout"
+                  size={64}
+                  className="text-pink-300 group-hover:text-pink-500 transition-colors"
+                />
               </div>
-            </div>
-          </Card>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-pink-600 transition-colors">
+                  {project.name}
+                </h3>
+                <div className="flex items-center justify-between text-sm text-gray-500">
+                  <span className="flex items-center">
+                    <Icon name="FileText" size={14} className="mr-1" />
+                    {project.pages.length} {project.pages.length === 1 ? 'страница' : 'страниц'}
+                  </span>
+                  <span>Изменено сегодня</span>
+                </div>
+              </div>
+            </Card>
+          ))}
 
-          <Card className="group cursor-pointer hover:shadow-xl transition-all duration-300 border-2 border-dashed border-pink-300 hover:border-pink-500 hover:bg-pink-50/50">
+          <Card
+            onClick={createNewProject}
+            className="group cursor-pointer hover:shadow-xl transition-all duration-300 border-2 border-dashed border-pink-300 hover:border-pink-500 hover:bg-pink-50/50"
+          >
             <div className="aspect-video flex items-center justify-center bg-gradient-to-br from-pink-50 to-rose-50">
               <div className="text-center">
                 <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-pink-100 flex items-center justify-center group-hover:bg-pink-200 transition-colors">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
@@ -6,15 +6,42 @@ import { Block } from '@/types/tilda';
 import BlockRenderer from '@/components/tilda/BlockRenderer';
 import BlockLibrary from '@/components/tilda/BlockLibrary';
 import BlockSettings from '@/components/tilda/BlockSettings';
+import { useProject } from '@/contexts/ProjectContext';
 import { toast } from 'sonner';
 
 export default function TildaEditor() {
   const navigate = useNavigate();
+  const { currentProject, updateProject } = useProject();
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [selectedBlock, setSelectedBlock] = useState<Block | null>(null);
   const [isPreview, setIsPreview] = useState(false);
   const [showLibrary, setShowLibrary] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
+
+  useEffect(() => {
+    if (!currentProject) {
+      navigate('/tilda');
+      return;
+    }
+    const currentPage = currentProject.pages[0];
+    if (currentPage) {
+      setBlocks(currentPage.blocks);
+    }
+  }, [currentProject, navigate]);
+
+  useEffect(() => {
+    if (currentProject && blocks) {
+      const updatedProject = {
+        ...currentProject,
+        pages: currentProject.pages.map((page, idx) =>
+          idx === 0
+            ? { ...page, blocks, updatedAt: new Date() }
+            : page
+        ),
+      };
+      updateProject(updatedProject);
+    }
+  }, [blocks]);
 
   const addBlock = (blockTemplate: Omit<Block, 'id' | 'order'>) => {
     const newBlock: Block = {
@@ -61,6 +88,10 @@ export default function TildaEditor() {
     setShowLibrary(false);
   };
 
+  if (!currentProject) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -76,7 +107,7 @@ export default function TildaEditor() {
             </Button>
             <div className="h-6 w-px bg-gray-300"></div>
             <h1 className="text-lg font-semibold text-gray-900">
-              Мой первый сайт
+              {currentProject.name}
             </h1>
           </div>
 
