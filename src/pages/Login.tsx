@@ -25,7 +25,7 @@ const Login = () => {
     
     if (success) {
       toast.success('Вход выполнен успешно!');
-      navigate('/dashboard');
+      navigate('/');
     } else {
       toast.error('Неверные данные для входа');
     }

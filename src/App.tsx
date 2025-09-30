@@ -10,7 +10,6 @@ import Index from "./pages/Index";
 import Editor from "./pages/Editor";
 import Login from "./pages/Login";
 import Users from "./pages/Users";
-import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,14 +25,6 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/editor" element={<Editor />} />
             <Route path="/login" element={<Login />} />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
             <Route
               path="/users"
               element={
