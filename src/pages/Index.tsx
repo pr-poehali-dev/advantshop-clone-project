@@ -55,7 +55,13 @@ const Index = () => {
               <a href="#" className="text-gray-700 hover:text-pink-600 transition-colors">Дашборд</a>
               <a href="#" className="text-gray-700 hover:text-pink-600 transition-colors">Шаблоны</a>
               <a href="#" className="text-gray-700 hover:text-pink-600 transition-colors">Домены</a>
-              <Button className="bg-pink-500 hover:bg-pink-600 text-white rounded-full px-6">Вход</Button>
+              <Button 
+                className="bg-pink-500 hover:bg-pink-600 text-white rounded-full px-6"
+                onClick={() => navigate('/login')}
+              >
+                <Icon name="User" size={16} className="mr-2" />
+                Вход
+              </Button>
             </nav>
 
             <Sheet>
@@ -73,6 +79,13 @@ const Index = () => {
                   <a href="#" className="text-lg text-gray-700 hover:text-pink-600">Дашборд</a>
                   <a href="#" className="text-lg text-gray-700 hover:text-pink-600">Шаблоны</a>
                   <a href="#" className="text-lg text-gray-700 hover:text-pink-600">Домены</a>
+                  <Button 
+                    className="bg-pink-500 hover:bg-pink-600 text-white rounded-full mt-4"
+                    onClick={() => navigate('/login')}
+                  >
+                    <Icon name="User" size={16} className="mr-2" />
+                    Вход
+                  </Button>
                 </div>
               </SheetContent>
             </Sheet>
