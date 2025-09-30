@@ -6,9 +6,11 @@ import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     login: '',
     password: ''
@@ -19,17 +21,15 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Симуляция входа
-    setTimeout(() => {
-      if (formData.login && formData.password) {
-        toast.success('Вход выполнен успешно!');
-        localStorage.setItem('isAuthenticated', 'true');
-        navigate('/');
-      } else {
-        toast.error('Заполните все поля');
-      }
-      setIsLoading(false);
-    }, 1000);
+    const success = await login(formData.login, formData.password);
+    
+    if (success) {
+      toast.success('Вход выполнен успешно!');
+      navigate('/');
+    } else {
+      toast.error('Неверные данные для входа');
+    }
+    setIsLoading(false);
   };
 
   return (

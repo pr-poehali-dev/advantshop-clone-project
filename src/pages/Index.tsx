@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import Icon from '@/components/ui/icon';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface Website {
   id: number;
@@ -20,6 +21,7 @@ interface Website {
 
 const Index = () => {
   const navigate = useNavigate();
+  const { user, isAuthenticated, logout, hasPermission } = useAuth();
   const [editMode, setEditMode] = useState(false);
   const [websites] = useState<Website[]>([
     { id: 1, name: 'Мой цветочный магазин', domain: 'flowers.poehali.dev', template: 'Bloom', published: true, views: 1247 },
@@ -55,13 +57,42 @@ const Index = () => {
               <a href="#" className="text-gray-700 hover:text-pink-600 transition-colors">Дашборд</a>
               <a href="#" className="text-gray-700 hover:text-pink-600 transition-colors">Шаблоны</a>
               <a href="#" className="text-gray-700 hover:text-pink-600 transition-colors">Домены</a>
-              <Button 
-                className="bg-pink-500 hover:bg-pink-600 text-white rounded-full px-6"
-                onClick={() => navigate('/login')}
-              >
-                <Icon name="User" size={16} className="mr-2" />
-                Вход
-              </Button>
+              {isAuthenticated && hasPermission('canManageUsers') && (
+                <Button
+                  variant="ghost"
+                  className="text-gray-700 hover:text-pink-600"
+                  onClick={() => navigate('/users')}
+                >
+                  <Icon name="Users" size={16} className="mr-2" />
+                  Пользователи
+                </Button>
+              )}
+              {isAuthenticated ? (
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-pink-50 rounded-full">
+                    <div className="bg-gradient-to-br from-pink-400 to-purple-500 rounded-full w-7 h-7 flex items-center justify-center text-white text-sm font-semibold">
+                      {user?.name.charAt(0)}
+                    </div>
+                    <span className="text-sm font-medium text-gray-700">{user?.name}</span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={logout}
+                    title="Выйти"
+                  >
+                    <Icon name="LogOut" size={18} />
+                  </Button>
+                </div>
+              ) : (
+                <Button 
+                  className="bg-pink-500 hover:bg-pink-600 text-white rounded-full px-6"
+                  onClick={() => navigate('/login')}
+                >
+                  <Icon name="User" size={16} className="mr-2" />
+                  Вход
+                </Button>
+              )}
             </nav>
 
             <Sheet>
@@ -79,13 +110,45 @@ const Index = () => {
                   <a href="#" className="text-lg text-gray-700 hover:text-pink-600">Дашборд</a>
                   <a href="#" className="text-lg text-gray-700 hover:text-pink-600">Шаблоны</a>
                   <a href="#" className="text-lg text-gray-700 hover:text-pink-600">Домены</a>
-                  <Button 
-                    className="bg-pink-500 hover:bg-pink-600 text-white rounded-full mt-4"
-                    onClick={() => navigate('/login')}
-                  >
-                    <Icon name="User" size={16} className="mr-2" />
-                    Вход
-                  </Button>
+                  {isAuthenticated && hasPermission('canManageUsers') && (
+                    <Button
+                      variant="ghost"
+                      className="justify-start text-lg text-gray-700 hover:text-pink-600"
+                      onClick={() => navigate('/users')}
+                    >
+                      <Icon name="Users" size={20} className="mr-2" />
+                      Пользователи
+                    </Button>
+                  )}
+                  {isAuthenticated ? (
+                    <div className="space-y-3 pt-4 border-t">
+                      <div className="flex items-center gap-3 px-3 py-2 bg-pink-50 rounded-lg">
+                        <div className="bg-gradient-to-br from-pink-400 to-purple-500 rounded-full w-10 h-10 flex items-center justify-center text-white font-semibold">
+                          {user?.name.charAt(0)}
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-900">{user?.name}</p>
+                          <p className="text-sm text-gray-500">{user?.email}</p>
+                        </div>
+                      </div>
+                      <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={logout}
+                      >
+                        <Icon name="LogOut" size={16} className="mr-2" />
+                        Выйти
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button 
+                      className="bg-pink-500 hover:bg-pink-600 text-white rounded-full mt-4"
+                      onClick={() => navigate('/login')}
+                    >
+                      <Icon name="User" size={16} className="mr-2" />
+                      Вход
+                    </Button>
+                  )}
                 </div>
               </SheetContent>
             </Sheet>
