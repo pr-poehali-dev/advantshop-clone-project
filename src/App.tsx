@@ -11,6 +11,7 @@ import Editor from "./pages/Editor";
 import Login from "./pages/Login";
 import Users from "./pages/Users";
 import Dashboard from "./pages/Dashboard";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,14 @@ const App = () => (
               element={
                 <ProtectedRoute requiredRole={['admin']}>
                   <Users />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <Settings />
                 </ProtectedRoute>
               }
             />
